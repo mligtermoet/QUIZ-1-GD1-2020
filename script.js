@@ -67,7 +67,7 @@ function evaluate(evt) {
   }
   counter++;
   questionBox.className = "questionBox";
-  //setTimeout(prepareQuestions, delayTime);
+  setTimeout(prepareQuestions, delayTime);
 }
 
 function finishQuiz() {
