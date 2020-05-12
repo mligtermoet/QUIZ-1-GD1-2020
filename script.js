@@ -36,6 +36,7 @@ function prepareQuestions() {
   questionBox.className = "questionBox-new";
   let quizImage = quiz.quizMetaData.imageURI;
   quizWrapper.style.backgroundImage = "url("+ quizImage + ")";
+  quiz.answerClicked = false; // prevent double click
   if (counter < quiz.quizContent.length) {
     myQuestion.innerHTML = quiz.quizContent[counter].question;
     myAnswer.innerHTML = "";
@@ -45,7 +46,7 @@ function prepareQuestions() {
       answer.score = quiz.quizContent[counter].answers[i].feedback;
       answer.innerHTML = quiz.quizContent[counter].answers[i].answer;
       myAnswer.appendChild(answer);
-      myAnswer.addEventListener('click', evaluate, true)
+      answer.addEventListener('click', evaluate, true)
     }
   } else {
     finishQuiz();
@@ -53,16 +54,20 @@ function prepareQuestions() {
 }
 
 function evaluate(evt) {
-  if (evt.target.score) {
-    evt.target.className = "right";
-    playerData.goodAnswers += 1; // increase good score
-  } else {
-    evt.target.className = "wrong";
-    playerData.wrongAnswers += 1; // increase wrong score
+  if(!quiz.answerClicked){
+    console.log("hier");
+    if (evt.target.score) {
+      evt.target.className = "right";
+      playerData.goodAnswers += 1; // increase good score
+    } else {
+      evt.target.className = "wrong";
+      playerData.wrongAnswers += 1; // increase wrong score
+    }
+    quiz.answerClicked=true;//prevent double click
   }
   counter++;
   questionBox.className = "questionBox";
-  setTimeout(prepareQuestions, delayTime);
+  //setTimeout(prepareQuestions, delayTime);
 }
 
 function finishQuiz() {
